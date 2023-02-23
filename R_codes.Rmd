@@ -1,6 +1,6 @@
 ---
-title: "A content analysis of research on technology use for teaching mathematics to students with disabilities: Word networks and topic modeling"
-# date: "`r Sys.Date()`"
+title: ""
+date: "`r Sys.Date()`"
 output:
   rmdformats::html_clean:
     code_folding: hide
@@ -18,13 +18,16 @@ knitr::opts_chunk$set(
     warning = FALSE)
 ```
 
-This webpage contains R codes used for Authors (2022). Data and scripts used for text preprocessing were posted through an online data repository at [https://osf.io/8cnyw/?view_only=74bfceb2ce37409ca3487606c3fd95e5](https://osf.io/8cnyw/?view_only=74bfceb2ce37409ca3487606c3fd95e5). 
+This webpage contains R codes used for Shin et al. (in press). Data and scripts used for text preprocessing were also posted through an online data repository at [https://osf.io/8cnyw](https://osf.io/8cnyw). 
+
+Citation: Shin, M., Ok, M. W., Choo, S., Hossain, G., Bryant, D. P., & Kang, E. (in press). A content analysis of research on technology use for teaching mathematics to students with disabilities: Word networks and topic modeling. *International Journal of STEM Education*.
 
 ## Import {.tabset}
 
 ### 1. Import a .xlsx file
 ```{r}
 suppressPackageStartupMessages({
+    library(knitr)
     library(tidyverse)
     library(readxl)
     library(tidytext)
@@ -105,7 +108,7 @@ united_tbl <- raw_tbl_period %>%
     mutate(study_number = row_number()) %>% 
     ungroup()
 
-load(file = "scripts/preprocess.all.RData")
+source("scripts/preprocess.all.R", local = TRUE)
 toks_processed <- united_tbl %>% preprocess.all(text_field = "abstract", verbose = FALSE)
 
 
@@ -149,7 +152,7 @@ dfm_2
 Given a vector of document covariates $X_d$, the topic proportion per document is defined as follows: $$\theta_{d, k}= \frac{\exp \left(\eta_{d, k}\right)}{\sum_{k=1}^K \exp \left(\eta_{d, k}\right)} \text {,} $$ where $\eta_d \sim \operatorname{Normal}\left(\mu_d=X_d \gamma, \Sigma\right);$ $\gamma$ is a coefficient matrix for the topic prevalence model, and $\Sigma$ is a covariance matrix (Roberts et al., 2016). The document-specific distribution over words is proportional to the combination of the baseline word frequency $(m)$ and the sparse topic-specific deviation from the baseline $(K_k)$ in the logarithmic space (Roberts et al., 2016): $$\beta_{d,k,y }=\frac{\exp \left(m_v+K_{k, v}\right)}{\sum_{k=1}^K \exp \left(m_v+K_{k, v}\right)} \text {,} $$ where $m$ and $K_k$ are vectors whose length is the number of distinct elements of vocabulary used in the current text mining, $v \in\{1, \ldots, 4,510\}$. 
 
 ### 1. Modeling
-```{r fig.align="center", fig.width=50, fig.height=20}
+```{r fig.align="center", fig.width = 12, fig.height= 5}
 out <- convert(dfm_2, to = "stm")
 
 # library(stm)
@@ -193,7 +196,7 @@ out <- convert(dfm_2, to = "stm")
 
 # plot(K_search_plot)
 
-knitr::include_graphics("figures/K_search.png")
+include_graphics("figures/K_search.png", error = FALSE)
 ```
 
 
